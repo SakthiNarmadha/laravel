@@ -9,7 +9,17 @@ class ArticlesController extends Controller
 {
     public function index()
     {
+        // to fetch  article that belongs to particular tag
+        if(request('tag')) 
+        {
+            $articles =Tag::where('name',request('tag'))->firstOrFail->articles;
+        
+        }else
+       
+        {
+
      $articles = Article::latest()->get();
+        }
      return view('articles.index',['articles'=>$articles]);
     }
 
