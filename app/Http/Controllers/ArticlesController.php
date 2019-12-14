@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
+use App\Tag;//  Tag model is associated with the ArticlesController 
 
 class ArticlesController extends Controller
 {
@@ -12,8 +13,8 @@ class ArticlesController extends Controller
         // to fetch  article that belongs to particular tag
         if(request('tag')) 
         {
-            $articles =Tag::where('name',request('tag'))->firstOrFail->articles;
-        
+            $articles =Tag::where('name',request('tag'))->firstOrFail()->articles;
+            
         }else
        
         {
@@ -32,12 +33,17 @@ class ArticlesController extends Controller
     
     public function create()
     {
-        return view('articles.create');
+        //fetch all  the tag and store in a variable
+
+        return view('articles.create',[
+            'tags'=>Tag::all()
+        ]);
     }
 
     
     public function store()
     {
+        dd(request()->all());
         $validatedAttributes=request()->validate([
             'title'=>'required',
             'excerpt'=>'required',
